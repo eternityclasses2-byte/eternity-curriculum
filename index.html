@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eternity Classes – Grade 2–3 Curriculum</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--eng:#4F46E5;--eng-light:#EEF2FF;--eng-mid:#818CF8;--math:#059669;--math-light:#ECFDF5;--math-mid:#34D399;--sci:#D97706;--sci-light:#FFFBEB;--sci-mid:#FBBF24;--bg:#F8F7FF;--text:#1E1B4B;--muted:#6B7280;--radius:16px;}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{font-size:16px;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+  /* ── HEADER ── */
+  header{background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 50%,#DB2777 100%);padding:20px 16px 20px;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,255,255,0.07);border-radius:50%;}
+  header::after{content:'';position:absolute;bottom:-50px;left:15%;width:140px;height:140px;background:rgba(255,255,255,0.05);border-radius:50%;}
+  .logo-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .logo-icon{width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .logo-text{font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:800;color:#fff;line-height:1.1;}
+  .logo-sub{font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;}
+  .greeting{position:relative;z-index:1;}
+  .greeting h1{font-family:'Baloo 2',sans-serif;font-size:clamp(20px,6vw,34px);font-weight:800;color:#fff;line-height:1.2;}
+  .greeting h1 span{color:#FDE68A;}
+  .greeting p{color:rgba(255,255,255,0.85);font-size:13px;margin-top:5px;font-weight:600;line-height:1.5;}
+  .grade-badge{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:100px;padding:6px 12px;font-size:12px;color:#fff;font-weight:700;margin-top:10px;line-height:1.4;}
+
+  /* ── TABS ── */
+  .tabs-wrap{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.09);position:sticky;top:0;z-index:100;padding:0 8px;}
+  .tabs{display:flex;max-width:900px;margin:0 auto;}
+  .tab-btn{flex:1;padding:13px 6px 11px;border:none;background:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border-bottom:3px solid transparent;transition:all 0.22s ease;white-space:nowrap;min-height:48px;}
+  .tab-btn .tab-emoji{font-size:18px;flex-shrink:0;}
+  .tab-btn .tab-label{font-size:13px;}
+  .tab-btn:active{opacity:0.7;}
+  .tab-btn.active-eng{color:var(--eng);border-bottom-color:var(--eng);}
+  .tab-btn.active-math{color:var(--math);border-bottom-color:var(--math);}
+  .tab-btn.active-sci{color:var(--sci);border-bottom-color:var(--sci);}
+
+  /* ── CONTENT ── */
+  .content-area{max-width:900px;margin:0 auto;padding:16px 12px 60px;}
+  .subject-panel{display:none;animation:fadeIn 0.3s ease;}
+  .subject-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ── HERO ── */
+  .subject-hero{border-radius:var(--radius);padding:18px 16px;margin-bottom:16px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;}
+  .eng-hero{background:linear-gradient(135deg,#4F46E5,#7C3AED);}
+  .math-hero{background:linear-gradient(135deg,#059669,#0EA5E9);}
+  .sci-hero{background:linear-gradient(135deg,#D97706,#DC2626);}
+  .subject-hero-icon{font-size:40px;line-height:1;flex-shrink:0;}
+  .subject-hero-text{flex:1;min-width:0;}
+  .subject-hero-text h2{font-family:'Baloo 2',sans-serif;font-size:clamp(18px,5vw,26px);font-weight:800;color:#fff;line-height:1.2;}
+  .subject-hero-text p{color:rgba(255,255,255,0.8);font-size:12px;margin-top:3px;font-weight:600;line-height:1.4;}
+  .hero-bubbles{display:flex;gap:7px;flex-shrink:0;}
+  .hero-bubble{background:rgba(255,255,255,0.15);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+
+  /* ── STATS ── */
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  .stat-card{background:#fff;border-radius:12px;padding:12px 10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.04);text-align:center;}
+  .stat-num{font-family:'Baloo 2',sans-serif;font-size:26px;font-weight:800;line-height:1;}
+  .stat-label{font-size:11px;color:var(--muted);font-weight:700;margin-top:3px;}
+  .eng .stat-num{color:var(--eng);}
+  .math .stat-num{color:var(--math);}
+  .sci .stat-num{color:var(--sci);}
+
+  /* ── UNIT CARDS ── */
+  .unit-card{background:#fff;border-radius:var(--radius);margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,0.06);overflow:hidden;border:1px solid rgba(0,0,0,0.05);}
+  .unit-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background 0.18s;user-select:none;-webkit-user-select:none;gap:8px;}
+  .unit-header:active{background:rgba(0,0,0,0.03);}
+  .unit-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
+  .unit-num{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;flex-shrink:0;}
+  .eng .unit-num{background:var(--eng);}
+  .math .unit-num{background:var(--math);}
+  .sci .unit-num{background:var(--sci);}
+  .unit-text{flex:1;min-width:0;}
+  .unit-title{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;line-height:1.3;word-break:break-word;}
+  .unit-meta{font-size:11px;color:var(--muted);margin-top:2px;font-weight:600;}
+  .unit-chevron{font-size:16px;transition:transform 0.3s;color:var(--muted);flex-shrink:0;}
+  .unit-card.open .unit-chevron{transform:rotate(180deg);}
+  .unit-body{display:none;border-top:1px solid #F3F4F6;}
+  .unit-card.open .unit-body{display:block;}
+  .progress-bar-wrap{margin-top:5px;}
+  .progress-track{background:#F3F4F6;border-radius:100px;height:4px;}
+  .progress-fill{height:4px;border-radius:100px;}
+  .eng .progress-fill{background:var(--eng);}
+  .math .progress-fill{background:var(--math);}
+  .sci .progress-fill{background:var(--sci);}
+
+  /* ── POINTERS ── */
+  .pointer-block{border-bottom:1px solid #F3F4F6;}
+  .pointer-block:last-child{border-bottom:none;}
+  .pointer-header{padding:13px 14px 13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background 0.18s;user-select:none;-webkit-user-select:none;gap:8px;}
+  .pointer-header:active{background:#F9F9F9;}
+  .pointer-left{display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;}
+  .pointer-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .eng .pointer-dot{background:var(--eng-mid);}
+  .math .pointer-dot{background:var(--math-mid);}
+  .sci .pointer-dot{background:var(--sci-mid);}
+  .pointer-text{flex:1;min-width:0;}
+  .pointer-name{font-weight:700;font-size:13.5px;line-height:1.3;word-break:break-word;}
+  .pointer-desc{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:600;line-height:1.4;}
+  .pointer-chevron{font-size:13px;color:var(--muted);transition:transform 0.22s;flex-shrink:0;margin-top:2px;}
+  .pointer-block.open .pointer-chevron{transform:rotate(180deg);}
+  .pointer-body{display:none;padding:2px 14px 16px 14px;}
+  .pointer-block.open .pointer-body{display:block;}
+
+  /* ── EXPLANATION ── */
+  .section-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;margin-top:2px;}
+  .explain-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+  .explain-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:600;color:#374151;line-height:1.55;}
+  .explain-num{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px;}
+  .eng .explain-num{background:var(--eng-light);color:var(--eng);}
+  .math .explain-num{background:var(--math-light);color:var(--math);}
+  .sci .explain-num{background:var(--sci-light);color:var(--sci);}
+  .section-divider{height:1px;background:#F3F4F6;margin:10px 0;}
+
+  /* ── SUBTOPICS ── */
+  .subtopic-grid{display:flex;flex-wrap:wrap;gap:6px;}
+  .subtopic-chip{padding:6px 11px;border-radius:100px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px;line-height:1.3;}
+  .eng .subtopic-chip{background:var(--eng-light);color:var(--eng);}
+  .math .subtopic-chip{background:var(--math-light);color:var(--math);}
+  .sci .subtopic-chip{background:var(--sci-light);color:var(--sci);}
+
+  /* ── FUN FACT ── */
+  .fun-fact{margin-top:10px;padding:10px 13px;border-radius:11px;font-size:12.5px;font-weight:700;display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+  .eng .fun-fact{background:#EEF2FF;color:#4338CA;border-left:3px solid var(--eng);}
+  .math .fun-fact{background:#ECFDF5;color:#065F46;border-left:3px solid var(--math);}
+  .sci .fun-fact{background:#FFFBEB;color:#92400E;border-left:3px solid var(--sci);}
+  .ff-icon{font-size:16px;flex-shrink:0;}
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar{width:4px;}
+  ::-webkit-scrollbar-track{background:#F3F4F6;}
+  ::-webkit-scrollbar-thumb{background:#C4B5FD;border-radius:100px;}
+
+  /* ── TABLET (≥600px) ── */
+  @media(min-width:600px){
+    header{padding:24px 28px 22px;}
+    .logo-text{font-size:20px;}
+    .grade-badge{font-size:13px;}
+    .tabs-wrap{padding:0 20px;}
+    .tab-btn{font-size:14px;padding:15px 8px 13px;}
+    .tab-btn .tab-emoji{font-size:19px;}
+    .content-area{padding:22px 16px 80px;}
+    .subject-hero{padding:20px 22px;gap:18px;}
+    .subject-hero-icon{font-size:48px;}
+    .subject-hero-text h2{font-size:22px;}
+    .unit-header{padding:16px 20px;}
+    .unit-title{font-size:16px;}
+    .pointer-header{padding:13px 20px 13px 26px;}
+    .pointer-body{padding:4px 20px 16px 44px;}
+    .pointer-name{font-size:14px;}
+  }
+
+  /* ── DESKTOP (≥900px) ── */
+  @media(min-width:900px){
+    header{padding:28px 32px 24px;}
+    .logo-text{font-size:22px;}
+    .tabs-wrap{padding:0 24px;}
+    .tab-btn{font-size:15px;padding:16px 8px 14px;}
+    .tab-btn .tab-emoji{font-size:20px;}
+    .content-area{padding:28px 20px 100px;}
+    .subject-hero{padding:24px 28px;gap:20px;}
+    .subject-hero-icon{font-size:52px;}
+    .subject-hero-text h2{font-size:26px;}
+    .hero-bubble{width:40px;height:40px;font-size:18px;}
+    .unit-header{padding:18px 22px;}
+    .unit-title{font-size:17px;}
+    .unit-header:hover{background:rgba(0,0,0,0.02);}
+    .pointer-header{padding:14px 22px 14px 30px;}
+    .pointer-header:hover{background:#FAFAFA;}
+    .pointer-body{padding:4px 28px 18px 50px;}
+    .pointer-name{font-size:14.5px;}
+    .subtopic-chip{font-size:12.5px;padding:6px 13px;}
+    .fun-fact{font-size:13px;}
+    .explain-item{font-size:13px;}
+  }
+
+  /* ── VERY SMALL (≤360px) ── */
+  @media(max-width:360px){
+    .greeting h1{font-size:18px;}
+    .tab-btn .tab-label{display:none;}
+    .tab-btn .tab-emoji{font-size:22px;}
+    .tab-btn{padding:14px 4px 12px;}
+    .hero-bubbles{display:none;}
+    .subject-hero{padding:14px 12px;}
+    .subject-hero-icon{font-size:34px;}
+    .subject-hero-text h2{font-size:16px;}
+    .stats-row{gap:7px;}
+    .stat-num{font-size:22px;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-row"><div class="logo-icon">♾️</div><div><div class="logo-text">Eternity Classes</div><div class="logo-sub">A Journey to Your Success</div></div></div>
+  <div class="greeting">
+    <h1>Hello, <span>Dear Parent! 👋</span></h1>
+    <p>Welcome to your child's personalised learning journey. Explore their full curriculum below.</p>
+    <div class="grade-badge">🎓 Grade 2–3 Curriculum &nbsp;|&nbsp; 🇺🇸 USA Standards</div>
+  </div>
+</header>
+<div class="tabs-wrap"><div class="tabs">
+  <button class="tab-btn active-eng" onclick="showSubject('eng',this)"><span class="tab-emoji">📖</span><span class="tab-label">English</span></button>
+  <button class="tab-btn" onclick="showSubject('math',this)"><span class="tab-emoji">🔢</span><span class="tab-label">Mathematics</span></button>
+  <button class="tab-btn" onclick="showSubject('sci',this)"><span class="tab-emoji">🔬</span><span class="tab-label">Science</span></button>
+</div></div>
+<div class="content-area">
+  <div class="subject-panel active eng" id="panel-eng">
+    <div class="subject-hero eng-hero"><div class="subject-hero-icon">📖</div><div class="subject-hero-text"><h2>English Language Arts</h2><p>Grade 2 → Grade 3 · Reading · Writing · Grammar · Speaking</p></div><div class="hero-bubbles"><div class="hero-bubble">✍️</div><div class="hero-bubble">🗣️</div><div class="hero-bubble">📝</div></div></div>
+    <div class="stats-row eng"><div class="stat-card"><div class="stat-num eng">6</div><div class="stat-label">Units</div></div><div class="stat-card"><div class="stat-num eng">16</div><div class="stat-label">Pointers</div></div><div class="stat-card"><div class="stat-num eng">80+</div><div class="stat-label">Subtopics</div></div></div>
+    <div id="eng-units"></div>
+  </div>
+  <div class="subject-panel math" id="panel-math">
+    <div class="subject-hero math-hero"><div class="subject-hero-icon">🔢</div><div class="subject-hero-text"><h2>Mathematics</h2><p>Grade 2 → Grade 3 · Number Sense · Operations · Geometry · Data</p></div><div class="hero-bubbles"><div class="hero-bubble">➕</div><div class="hero-bubble">📐</div><div class="hero-bubble">📊</div></div></div>
+    <div class="stats-row math"><div class="stat-card"><div class="stat-num math">8</div><div class="stat-label">Units</div></div><div class="stat-card"><div class="stat-num math">24</div><div class="stat-label">Pointers</div></div><div class="stat-card"><div class="stat-num math">100+</div><div class="stat-label">Subtopics</div></div></div>
+    <div id="math-units"></div>
+  </div>
+  <div class="subject-panel sci" id="panel-sci">
+    <div class="subject-hero sci-hero"><div class="subject-hero-icon">🔬</div><div class="subject-hero-text"><h2>Science</h2><p>Grade 2 → Grade 3 · Matter · Forces · Living Things · Earth & Space</p></div><div class="hero-bubbles"><div class="hero-bubble">🌍</div><div class="hero-bubble">🧬</div><div class="hero-bubble">⚡</div></div></div>
+    <div class="stats-row sci"><div class="stat-card"><div class="stat-num sci">5</div><div class="stat-label">Units</div></div><div class="stat-card"><div class="stat-num sci">20</div><div class="stat-label">Pointers</div></div><div class="stat-card"><div class="stat-num sci">70+</div><div class="stat-label">Subtopics</div></div></div>
+    <div id="sci-units"></div>
+  </div>
+</div>
+
+<script>
+const C={
+ eng:{units:[
+  {title:"Reading Foundations",emoji:"🔤",pointers:[
+   {name:"Phonics & Word Recognition",desc:"Letter sounds, spelling patterns and word building",
+    ex:["Learn the sounds that individual letters and letter combinations make in words","Match letter patterns to correct sounds to decode unknown words independently","Apply phonics rules to read unfamiliar words without help","Practise spelling words accurately using sound-to-letter knowledge"],
+    fun:"The word 'phonics' comes from the Greek word for 'sound'! 🎵",
+    chips:[{e:"🔤",t:"Short vowel sounds"},{e:"🔤",t:"Long vowel sounds"},{e:"🔇",t:"Silent e words"},{e:"🤝",t:"Vowel teams"},{e:"🔗",t:"Blends"},{e:"✌️",t:"Digraphs"},{e:"3️⃣",t:"Trigraphs"},{e:"🎵",t:"Rhyming words"},{e:"👨‍👩‍👧",t:"Word families"},{e:"🔡",t:"Spelling patterns"}]},
+   {name:"Multisyllabic Words",desc:"Breaking words into syllables, prefixes and suffixes",
+    ex:["Break longer words into smaller syllable chunks to make reading easier","Identify open (e.g. 'ba-') and closed (e.g. 'bat') syllable types in words","Add prefixes and suffixes to base words and understand how the meaning changes","Read and spell words containing 2–4 syllables with growing fluency and accuracy"],
+    fun:"The word 'antidisestablishmentarianism' has 12 syllables! Can you count them? 😄",
+    chips:[{e:"📏",t:"Syllables"},{e:"🔓",t:"Open syllables"},{e:"🔒",t:"Closed syllables"},{e:"⬅️",t:"Prefixes"},{e:"➡️",t:"Suffixes"},{e:"🌱",t:"Root words"},{e:"📖",t:"Reading multisyllabic words"},{e:"✏️",t:"Spelling multisyllabic words"}]},
+   {name:"Sight Words & Irregular Words",desc:"High-frequency words that don't follow typical spelling rules",
+    ex:["Recognise the most common English words instantly without needing to decode them","Memorise words that break normal spelling rules (e.g. 'said', 'because', 'friend')","Build reading speed and fluency using a strong high-frequency word bank","Practise spelling the most common English words correctly in written work"],
+    fun:"There are over 100 sight words kids learn by Grade 3 — like 'the', 'said', 'because'! 🌟",
+    chips:[{e:"👁️",t:"Sight word recognition"},{e:"✏️",t:"Sight word spelling"},{e:"🔀",t:"Irregular words"},{e:"📊",t:"High-frequency words"},{e:"📋",t:"Common word lists"}]}
+  ]},
+  {title:"Reading Comprehension",emoji:"🧠",pointers:[
+   {name:"Main Idea & Details",desc:"Finding the most important information in a passage",
+    ex:["Identify the central message or key point of any passage read","Find and list sentences that directly support or prove the main idea","Distinguish between important information and minor background details","Write a brief summary of a passage completely in their own words"],
+    fun:"A good main idea is like the trunk of a tree — all the details are the branches! 🌳",
+    chips:[{e:"💡",t:"Main idea"},{e:"🔎",t:"Supporting details"},{e:"📌",t:"Topic of the passage"},{e:"📝",t:"Summarizing"},{e:"🔑",t:"Key details"}]},
+   {name:"Inference & Prediction",desc:"Using text clues to draw conclusions and predict",
+    ex:["Use clues from the text to figure out information the author hasn't directly stated","Predict upcoming events by combining text evidence with their own prior knowledge","Identify cause-and-effect relationships woven into a story or informational passage","Draw logical conclusions and clearly explain the reasoning behind each one"],
+    fun:"Great readers are like detectives — they use clues to figure out what hasn't been said! 🕵️",
+    chips:[{e:"🧩",t:"Making inferences"},{e:"🔮",t:"Making predictions"},{e:"🔍",t:"Clues from the text"},{e:"💭",t:"Drawing conclusions"},{e:"⚡",t:"Cause and effect"}]},
+   {name:"Story Elements",desc:"Characters, setting, plot, problem, solution and theme",
+    ex:["Identify the who (characters), where and when (setting), and what happens (plot) in a story","Describe the main problem a character faces and explain how it gets resolved","Trace a story's structure step by step through its beginning, middle, and end","Identify the lesson or theme the author wants readers to carry away from the story"],
+    fun:"Every great story needs a problem to solve — even your favourite fairy tales! 🏰",
+    chips:[{e:"🧑",t:"Characters"},{e:"📍",t:"Setting"},{e:"❓",t:"Problem"},{e:"✅",t:"Solution"},{e:"📅",t:"Beginning, middle, end"},{e:"💬",t:"Theme"}]},
+   {name:"Author's Purpose & Text Features",desc:"Why authors write and how to use non-fiction features",
+    ex:["Determine whether a text was written to inform, to entertain, or to persuade the reader","Use headings and subheadings to predict content and navigate a passage more efficiently","Interpret pictures, captions, and diagrams to deepen understanding of the text","Use a glossary, index, and table of contents to locate specific information quickly"],
+    fun:"Authors write to Inform, Entertain, or Persuade — just remember PIE! 🥧",
+    chips:[{e:"🎯",t:"Author's purpose"},{e:"ℹ️",t:"Inform, entertain, persuade"},{e:"📌",t:"Headings"},{e:"🔡",t:"Bold words"},{e:"🖼️",t:"Pictures and captions"},{e:"📑",t:"Table of contents"},{e:"📖",t:"Glossary"},{e:"🔍",t:"Index"}]}
+  ]},
+  {title:"Vocabulary",emoji:"📚",pointers:[
+   {name:"Word Meanings",desc:"Context clues, multiple meanings, shades of meaning, idioms",
+    ex:["Use surrounding words and sentences to work out the meaning of an unfamiliar word","Understand that some words carry more than one completely different meaning","Explore words with similar but subtly different shades of meaning (happy vs joyful vs elated)","Recognise common idioms and interpret their figurative, non-literal meaning correctly"],
+    fun:"'It's raining cats and dogs' doesn't mean real cats and dogs — idioms are funny! 🐱🐶",
+    chips:[{e:"🔍",t:"Context clues"},{e:"2️⃣",t:"Multiple-meaning words"},{e:"🎨",t:"Shades of meaning"},{e:"💬",t:"Idioms"},{e:"📖",t:"Vocabulary in context"}]},
+   {name:"Word Relationships",desc:"Synonyms, antonyms, homophones and word categories",
+    ex:["Identify and match synonyms — words that share the same or a very similar meaning","Identify and match antonyms — words that carry the opposite meaning to each other","Distinguish between homophones that sound identical but have different spellings and meanings","Sort words into categories based on shared topics, characteristics, or semantic relationships"],
+    fun:"'Happy' and 'joyful' are synonyms — they're best word friends! 🤝",
+    chips:[{e:"↔️",t:"Synonyms"},{e:"⬅️➡️",t:"Antonyms"},{e:"🔊",t:"Homophones"},{e:"🔁",t:"Homonyms"},{e:"📂",t:"Word categories"}]},
+   {name:"Word Building",desc:"Prefixes, suffixes, compound words and Greek/Latin roots",
+    ex:["Add prefixes (un-, re-, pre-, mis-) to change or extend the meaning of base words","Add suffixes (-ing, -ed, -ful, -less) to create new word forms and understand their effect","Identify the base or root word hidden within a longer, more complex word","Combine two smaller words to form compound words and understand their combined meaning"],
+    fun:"'Pre-' means before, '-tion' means action — knowing roots unlocks thousands of words! 🗝️",
+    chips:[{e:"⬅️",t:"Prefixes"},{e:"➡️",t:"Suffixes"},{e:"🌱",t:"Root words"},{e:"🔗",t:"Compound words"},{e:"👨‍👩‍👧",t:"Word families"},{e:"🏺",t:"Basic Greek and Latin roots"}]}
+  ]},
+  {title:"Grammar",emoji:"✏️",pointers:[
+   {name:"Nouns & Pronouns",desc:"Naming words and words that replace nouns",
+    ex:["Identify common nouns (everyday naming words) and proper nouns (specific names) in sentences","Form singular and plural nouns correctly, including irregular plurals (child→children, mouse→mice)","Show ownership using possessive nouns with apostrophes correctly (e.g. Sara's book)","Use subject, object, and possessive pronouns consistently and correctly in all written work"],
+    fun:"Your name is a proper noun — it always starts with a capital letter! 🌟",
+    chips:[{e:"🏷️",t:"Common nouns"},{e:"🔤",t:"Proper nouns"},{e:"1️⃣",t:"Singular and plural nouns"},{e:"'s",t:"Possessive nouns"},{e:"🔄",t:"Pronouns"},{e:"🙋",t:"Subject pronouns"},{e:"🎯",t:"Object pronouns"},{e:"📦",t:"Possessive pronouns"}]},
+   {name:"Verbs & Tenses",desc:"Action words and describing when actions happen",
+    ex:["Identify action verbs (run, write, jump) and helping verbs (is, will, has) within sentences","Write sentences in present, past, and future tense correctly and consistently throughout a piece","Change verb forms to match the subject of a sentence (she runs / they run)","Recognise and correctly use common irregular verb forms (run→ran, go→went, eat→ate)"],
+    fun:"Verbs are the action heroes of sentences — without them, absolutely nothing happens! 🦸",
+    chips:[{e:"🏃",t:"Action verbs"},{e:"🤝",t:"Helping verbs"},{e:"⏰",t:"Present tense"},{e:"⏮️",t:"Past tense"},{e:"⏭️",t:"Future tense"},{e:"🤝",t:"Subject-verb agreement"}]},
+   {name:"Adjectives & Adverbs",desc:"Describing words for nouns and verbs",
+    ex:["Use adjectives to describe nouns with vivid and specific detail in writing","Use adverbs to describe how, when, where, and to what degree actions are performed","Form comparative (-er, more) and superlative (-est, most) adjectives to make comparisons","Place adjectives before nouns and adverbs in the grammatically correct position in a sentence"],
+    fun:"Without adjectives, a dog is just a dog — with them, it's a fluffy, tiny, golden dog! 🐶",
+    chips:[{e:"🎨",t:"Adjectives"},{e:"⚡",t:"Adverbs"},{e:"📊",t:"Comparing adjectives"},{e:"📈",t:"Comparing adverbs"},{e:"🏷️",t:"Describing nouns"},{e:"🔤",t:"Describing verbs"}]},
+   {name:"Sentence Structure",desc:"Building complete, varied and correct sentences",
+    ex:["Identify the subject (who/what) and predicate (the action or description) in any sentence","Write and correctly distinguish between statements, questions, commands, and exclamations","Combine two simple sentences into one compound sentence using conjunctions (and, but, so, or)","Identify and fix sentence fragments (incomplete thoughts) and run-on sentences in written work"],
+    fun:"A sentence must have a subject AND a predicate — like a team, they need each other! 🤜🤛",
+    chips:[{e:"👤",t:"Subject and predicate"},{e:"1️⃣",t:"Simple sentences"},{e:"🔗",t:"Compound sentences"},{e:"💬",t:"Statements"},{e:"❓",t:"Questions"},{e:"📢",t:"Commands"},{e:"❗",t:"Exclamations"},{e:"⚠️",t:"Fragments"},{e:"🔄",t:"Run-on sentences"}]},
+   {name:"Punctuation & Capitalization",desc:"Rules for writing correctly and clearly",
+    ex:["Apply capital letters at sentence starts, for proper nouns, and in titles consistently","Use full stops, question marks, and exclamation marks to end different sentence types correctly","Insert commas correctly in lists, after introductory words, and in compound sentences","Use apostrophes for contractions (don't, it's) and possessives (Tom's), plus quotation marks for dialogue"],
+    fun:"A comma changes meaning: 'Let's eat, Grandma!' vs 'Let's eat Grandma!' 😱",
+    chips:[{e:"🔤",t:"Capital letters"},{e:".",t:"Full stop"},{e:"❓",t:"Question mark"},{e:"❗",t:"Exclamation mark"},{e:",",t:"Commas"},{e:"'",t:"Apostrophe"},{e:"\"",t:"Quotation marks"}]}
+  ]},
+  {title:"Writing",emoji:"✍️",pointers:[
+   {name:"Sentence & Paragraph Writing",desc:"Building ideas into organised, clear paragraphs",
+    ex:["Write a clear topic sentence that introduces the single main idea of a paragraph","Add 2–3 supporting detail sentences that expand and prove the main idea","End every paragraph with a closing sentence that wraps up the idea satisfyingly","Use sequence words (first, next, then, finally) to organise and connect ideas logically"],
+    fun:"Every paragraph is like a sandwich: topic sentence (bread), details (filling), closing (bread)! 🥪",
+    chips:[{e:"💡",t:"Topic sentence"},{e:"🔎",t:"Supporting details"},{e:"🏁",t:"Closing sentence"},{e:"🏗️",t:"Paragraph structure"},{e:"📋",t:"Organizing ideas"},{e:"🔢",t:"Sequence words"}]},
+   {name:"Types of Writing",desc:"Narrative, descriptive, opinion and informational writing",
+    ex:["Write narrative stories with a clear beginning, an engaging middle, and a satisfying end","Describe people, places, or events using vivid sensory details and strong, precise adjectives","Express a personal opinion clearly and support it with at least two well-reasoned arguments","Compose informational paragraphs about a topic using facts, definitions, and real-world examples"],
+    fun:"Writing is a superpower — with it, you can share any story with the whole world! 🌍",
+    chips:[{e:"📖",t:"Narrative writing"},{e:"🎨",t:"Descriptive writing"},{e:"💭",t:"Opinion writing"},{e:"ℹ️",t:"Informational writing"},{e:"📔",t:"Story writing"},{e:"💌",t:"Letter writing"}]},
+   {name:"Editing & Revising",desc:"Improving and correcting written work",
+    ex:["Proofread writing carefully line by line to catch and correct all spelling errors","Check every sentence for correct punctuation marks and appropriate capitalisation","Revise sentences to improve their clarity, add sentence variety, and strengthen word choices","Reorganise ideas across paragraphs so the writing flows in a logical and connected sequence"],
+    fun:"Even famous authors edit their work 10+ times before publishing! ✏️",
+    chips:[{e:"🔤",t:"Editing spelling"},{e:".",t:"Editing punctuation"},{e:"📝",t:"Editing grammar"},{e:"🔄",t:"Revising sentences"},{e:"📋",t:"Revising paragraphs"}]}
+  ]},
+  {title:"Speaking & Listening",emoji:"🗣️",pointers:[
+   {name:"Speaking Skills",desc:"Speaking clearly, storytelling and presenting confidently",
+    ex:["Speak at an appropriate volume and pace with clear pronunciation for any audience","Share ideas and opinions in complete, well-formed sentences during class discussions","Present a show-and-tell, story, or oral report with a clear structure and growing confidence","Engage respectfully in conversations — taking turns, staying on topic, responding thoughtfully"],
+    fun:"Public speaking is one of the most useful skills you can learn — start early! 🎤",
+    chips:[{e:"🗣️",t:"Speaking clearly"},{e:"💡",t:"Sharing ideas"},{e:"📖",t:"Storytelling"},{e:"🎁",t:"Show and tell"},{e:"🎤",t:"Oral presentation"},{e:"💬",t:"Conversation skills"}]},
+   {name:"Listening Skills",desc:"Careful listening, following instructions and responding",
+    ex:["Identify the main idea and key supporting details from spoken content or a read-aloud","Follow multi-step spoken instructions accurately and carry them out in the correct sequence","Ask relevant, thoughtful questions and give clear, on-topic answers during group discussion","Retell a story or message that was spoken aloud in their own words and in the correct order"],
+    fun:"You have two ears and one mouth — listening is twice as important as speaking! 👂👂",
+    chips:[{e:"💡",t:"Listening for main idea"},{e:"🔎",t:"Listening for details"},{e:"📋",t:"Following instructions"},{e:"❓",t:"Asking and answering questions"},{e:"🔁",t:"Listening and retelling"}]}
+  ]}
+ ]},
+
+ math:{units:[
+  {title:"Place Value & Number Sense",emoji:"🔢",pointers:[
+   {name:"Place Value",desc:"Understanding digit positions up to ten thousands",
+    ex:["Read and write numbers up to 10,000 in standard form, word form, and expanded form","Identify the exact value of each digit based on its position within the number","Regroup numbers between place values (e.g. 10 ones = 1 ten; 10 hundreds = 1 thousand)","Apply place value understanding confidently to solve real-world word problems"],
+    fun:"Our number system uses only 10 digits (0–9) to write ANY number ever! 🤯",
+    chips:[{e:"📍",t:"Place value names up to ten thousands"},{e:"💎",t:"Value of a digit"},{e:"🔢",t:"Standard form"},{e:"📐",t:"Expanded form"},{e:"🔄",t:"Convert between place values"},{e:"♻️",t:"Regrouping numbers"},{e:"📝",t:"Place value word problems"},{e:"2️⃣",t:"Even and odd numbers"},{e:"🔍",t:"Guess the number"}]},
+   {name:"Comparing & Ordering Numbers",desc:"Using symbols to compare and arrange numbers in order",
+    ex:["Use >, <, and = symbols correctly to compare any two numbers up to 1,000","Arrange a set of numbers in ascending (smallest first) or descending (largest first) order","Identify the greatest and smallest numbers from any given set","Use number lines as a visual tool to compare and confirm the relative size of values"],
+    fun:"The hungry crocodile always eats the bigger number — that's what '>' means! 🐊",
+    chips:[{e:"⚖️",t:"Compare numbers"},{e:"🏆",t:"Greatest and smallest number"},{e:"📊",t:"Order numbers"},{e:"🏗️",t:"Make largest/smallest number"},{e:"🧩",t:"Ordering puzzles"},{e:"📏",t:"Compare using number line"}]},
+   {name:"Rounding Numbers",desc:"Rounding to nearest tens and hundreds for estimation",
+    ex:["Round any 2-digit number to the nearest 10 using the standard rounding rules","Round any 3-digit number to the nearest 100 using place value understanding","Use a number line visually to support and explain each rounding decision made","Apply rounding confidently in real-life estimation contexts such as money, time, or distance"],
+    fun:"Rounding helps you think quickly — 'about 50 kids came' is easier than saying 47! 😄",
+    chips:[{e:"🔟",t:"Round to nearest 10"},{e:"💯",t:"Round to nearest 100"},{e:"📏",t:"Rounding using number line"},{e:"📋",t:"Rounding in tables"},{e:"🧩",t:"Rounding puzzles"}]}
+  ]},
+  {title:"Addition & Subtraction",emoji:"➕",pointers:[
+   {name:"Estimation",desc:"Estimating sums and differences to check reasonableness",
+    ex:["Round addends before calculating to find a quick, approximate answer in any situation","Use compatible numbers (numbers that pair nicely) to simplify mental estimation tasks","Apply estimation to check whether a calculated answer is reasonable or contains an error","Estimate the answer to a word problem before solving exactly to build strong number sense"],
+    fun:"Estimation saves time! Shoppers use it every single day at the grocery store 🛒",
+    chips:[{e:"➕",t:"Estimate sums"},{e:"➖",t:"Estimate differences"},{e:"🤝",t:"Compatible numbers"},{e:"📝",t:"Estimate in word problems"},{e:"⚖️",t:"Estimate to compare answers"}]},
+   {name:"Addition",desc:"Multi-strategy addition including regrouping",
+    ex:["Add 2- and 3-digit numbers using number lines, expanded form, and column methods","Apply regrouping (carrying) correctly whenever digits in a place value column exceed 9","Solve missing digit problems by working backwards from the known sum","Write and solve addition word problems based on familiar real-life everyday scenarios"],
+    fun:"The world record for mental addition is adding 10 three-digit numbers in 1.7 seconds! ⚡",
+    chips:[{e:"📏",t:"Addition using number line"},{e:"📐",t:"Addition using expanded form"},{e:"♻️",t:"Addition with regrouping"},{e:"➡️",t:"Addition without regrouping"},{e:"3️⃣",t:"Add 3 numbers"},{e:"❓",t:"Missing digit addition"},{e:"📝",t:"Addition word problems"},{e:"⚖️",t:"Balance equations"}]},
+   {name:"Subtraction",desc:"Strategies including regrouping and subtracting across zeros",
+    ex:["Subtract multi-digit numbers using number lines, expanded form, and column methods","Regroup (borrow) across place values when the top digit is smaller than the bottom digit","Subtract correctly from numbers containing zeros without making common errors (e.g. 400–237)","Solve real-world subtraction word problems and verify every answer using inverse addition"],
+    fun:"Subtraction is just addition running in reverse — they're best friends! 🤝",
+    chips:[{e:"📏",t:"Subtraction using number line"},{e:"📐",t:"Subtraction using expanded form"},{e:"♻️",t:"Subtraction with regrouping"},{e:"0️⃣",t:"Subtraction across zeros"},{e:"❓",t:"Missing digit subtraction"},{e:"📝",t:"Subtraction word problems"},{e:"⚖️",t:"Balance equations"}]},
+   {name:"Mixed Operations",desc:"Combining addition and subtraction; fact families",
+    ex:["Solve multi-step problems requiring both addition and subtraction within a single question","Use fact families to show all four related number sentences for any set of three numbers","Find an unknown number in a problem using combined sum and difference clue information","Apply mixed operations to age comparison problems and practical real-life contexts"],
+    fun:"Fact families: 3+4=7, 4+3=7, 7-3=4, 7-4=3 — they all belong together! 👨‍👩‍👧‍👦",
+    chips:[{e:"🔀",t:"Addition and subtraction together"},{e:"👨‍👩‍👧",t:"Fact families"},{e:"📝",t:"Word problems"},{e:"🔍",t:"Find numbers using sum and difference"},{e:"🎂",t:"Age problems"}]},
+   {name:"Properties of Addition",desc:"Mathematical properties that simplify and speed up calculation",
+    ex:["Apply the commutative property: addends can be written in any order without changing the sum","Use the associative property to regroup addends into convenient pairs for mental calculation","Understand the identity property: adding zero always leaves the original number unchanged","Recognise and predict even/odd patterns that arise when adding even and odd numbers together"],
+    fun:"3+5 = 5+3 always! The commutative property is the famous 'flip-flop' rule! 🔄",
+    chips:[{e:"🔄",t:"Commutative property"},{e:"🤝",t:"Associative property"},{e:"0️⃣",t:"Identity property"},{e:"🔢",t:"Addition patterns (even/odd)"}]}
+  ]},
+  {title:"Multiplication",emoji:"✖️",pointers:[
+   {name:"Understanding Multiplication",desc:"Equal groups, arrays, repeated addition and number lines",
+    ex:["Model multiplication as repeated addition (e.g. 4+4+4 = 3 groups of 4 = 3×4 = 12)","Represent equal groups visually using drawings or physical objects to find a total","Arrange counters into arrays (rows and columns) and write the matching multiplication sentence","Jump along number lines in equal steps to find products and visualise multiplication clearly"],
+    fun:"3×4 just means 3 groups of 4 — like 3 plates, each holding 4 cookies! 🍪",
+    chips:[{e:"🔁",t:"Repeated addition"},{e:"👥",t:"Equal groups"},{e:"⬛",t:"Arrays"},{e:"📏",t:"Number line multiplication"},{e:"✖️",t:"Multiplication sentences"},{e:"⚖️",t:"Compare using multiplication"}]},
+   {name:"Multiplication Tables",desc:"Fluency in times tables up to 10 and 12",
+    ex:["Memorise and recall all multiplication facts up to 10×10 with speed and accuracy","Extend knowledge to the complete 12×12 multiplication table confidently","Identify missing factors in incomplete multiplication sentences by thinking in reverse","Spot patterns within tables (e.g. 5s always end in 0 or 5) to strengthen and confirm recall"],
+    fun:"Know your 2s and 5s tables? You can figure out your 10s easily — 2×5=10! 💡",
+    chips:[{e:"🔟",t:"Tables up to 10"},{e:"1️⃣2️⃣",t:"Tables up to 12"},{e:"❓",t:"Missing factors"},{e:"✅",t:"True/False multiplication"},{e:"⬛",t:"Multiplication squares"}]},
+   {name:"Multiplication Properties",desc:"Commutative, associative and distributive properties",
+    ex:["Apply the commutative property: 3×4 = 4×3 — the order of factors does not change the product","Use the associative property to regroup three or more factors for simpler, faster calculation","Break apart a number using the distributive property: 6×7 = 6×(5+2) = 30+12 = 42","Understand that any number multiplied by 0 equals 0, and multiplied by 1 stays unchanged"],
+    fun:"Any number × 0 = 0. Zero is multiplication's magical eraser! 🧹",
+    chips:[{e:"🔄",t:"Commutative property"},{e:"🤝",t:"Associative property"},{e:"📐",t:"Distributive property"},{e:"0️⃣",t:"Multiply by 0 and 1"},{e:"🔢",t:"Multiplication patterns"}]},
+   {name:"Multiplication Word Problems",desc:"Real-life multiplication with models and strip diagrams",
+    ex:["Identify equal-group and array situations embedded within real-world word problems","Draw and use strip/bar models to represent and solve multiplication problems visually","Find a missing number (unknown factor) in a multiplication equation by reasoning","Explain the solution to a word problem using both a clear number sentence and written words"],
+    fun:"Word problems tell a story — find the numbers and the operation, be a math detective! 🕵️",
+    chips:[{e:"👥",t:"Equal groups word problems"},{e:"⬛",t:"Array word problems"},{e:"📏",t:"Strip model problems"},{e:"❓",t:"Missing number problems"}]},
+   {name:"Two-Digit Multiplication",desc:"Area models and multiplying by larger numbers",
+    ex:["Multiply a 1-digit number by any multiple of 10 using place value understanding (e.g. 3×40)","Use area models to break apart a 2-digit number and multiply each part by a 1-digit number","Multiply any 1-digit number by any 2-digit number accurately using expanded or area strategies","Multiply three factors together by applying the associative property across two steps"],
+    fun:"Area models break big multiplications into small, friendly, manageable ones! 🗺️",
+    chips:[{e:"🔟",t:"Multiply by multiples of 10"},{e:"🗺️",t:"Area model multiplication"},{e:"2️⃣",t:"Multiply 1-digit by 2-digit"},{e:"3️⃣",t:"Multiply 3 numbers"},{e:"📝",t:"Word problems"}]}
+  ]},
+  {title:"Division",emoji:"➗",pointers:[
+   {name:"Understanding Division",desc:"Equal sharing, grouping and its link to multiplication",
+    ex:["Share a total equally into a known number of groups to model what division means concretely","Understand division as equal grouping — how many equal groups can be formed from a total?","Write and interpret division sentences using ÷ and = symbols in the correct positions","Use arrays and number lines to represent and solve division problems in a visual way"],
+    fun:"Division is multiplication running backwards — they're inverse best friends! 🔄",
+    chips:[{e:"🤝",t:"Equal sharing"},{e:"👥",t:"Equal grouping"},{e:"➗",t:"Division sentences"},{e:"⬛",t:"Arrays and division"},{e:"📏",t:"Number line division"},{e:"🔗",t:"Relation between multiplication and division"}]},
+   {name:"Division Facts",desc:"Fluency in division facts up to 10 and 12",
+    ex:["Divide numbers up to 100 quickly and accurately using known multiplication facts as a tool","Recall all division facts up to 12÷12 with genuine fluency and speed","Identify missing dividends, divisors, or quotients in incomplete division equations","Sort and classify division problems by operation type or the range of numbers involved"],
+    fun:"12 ÷ 4 = 3 — just think of 4 friends sharing 12 pizza slices equally! 🍕",
+    chips:[{e:"🔟",t:"Divide up to 10"},{e:"1️⃣2️⃣",t:"Divide up to 12"},{e:"❓",t:"Missing number division"},{e:"✅",t:"Division true/false"},{e:"📂",t:"Division sorting"}]},
+   {name:"Division Word Problems",desc:"Real-life equal sharing and grouping problems",
+    ex:["Solve word problems involving sharing a total equally among a given number of groups","Solve word problems involving grouping into equal sets when the group size is known","Use array and strip/bar models to illustrate and set up division situations clearly","Write a complete, correct number sentence and explain the solution in their own words"],
+    fun:"Equal sharing is fairness in action — mathematics makes the world fair! ⚖️",
+    chips:[{e:"👥",t:"Equal groups problems"},{e:"⬛",t:"Array problems"},{e:"📏",t:"Strip model problems"},{e:"📝",t:"Division word problems"}]},
+   {name:"Mixed Multiplication & Division",desc:"Connecting both operations as inverse pairs",
+    ex:["Solve a variety of problems that blend multiplication and division within the same context","Use the inverse relationship to check multiplication answers using division (and vice versa)","Find missing values in equations that combine both multiplication and division operations","Identify whether a real-life situation requires multiplication or division and justify the choice"],
+    fun:"Multiplication and division are a perfect pair — learn one and the other gets easier! 🎯",
+    chips:[{e:"🔀",t:"Mixed facts"},{e:"❓",t:"Missing numbers"},{e:"📝",t:"Word problems"},{e:"🔢",t:"Real-life patterns"}]}
+  ]},
+  {title:"Fractions",emoji:"½",pointers:[
+   {name:"Understanding Fractions",desc:"Parts of a whole, unit fractions and fraction models",
+    ex:["Divide shapes into equal parts and correctly name each part using fraction notation","Identify and write unit fractions (1/2, 1/3, 1/4, 1/6, 1/8) from a variety of visual models","Find a fraction of a group of objects by dividing the total into the correct number of equal sets","Decompose fractions as sums of unit fractions (e.g. 3/4 = 1/4 + 1/4 + 1/4)"],
+    fun:"A pizza cut into 8 equal pieces — eating 3 of them means you had 3/8 of the pizza! 🍕",
+    chips:[{e:"⬛",t:"Equal parts"},{e:"1️⃣",t:"Unit fractions"},{e:"🗺️",t:"Fraction models"},{e:"👥",t:"Fractions of a group"},{e:"✏️",t:"Write fractions"},{e:"🔍",t:"Decompose fractions"}]},
+   {name:"Fractions on Number Line",desc:"Representing and comparing fractions on number lines",
+    ex:["Divide a number line between 0 and 1 into equal parts and accurately label each unit fraction","Place any given fraction at its exact correct position on a labelled number line","Compare two fractions by finding and comparing their positions on the same number line"],
+    fun:"A fraction number line is like a ruler that measures fairness perfectly! 📏",
+    chips:[{e:"1️⃣",t:"Unit fractions on number line"},{e:"📍",t:"Graph fractions"},{e:"⚖️",t:"Compare fractions on number line"}]},
+   {name:"Equivalent Fractions",desc:"Different fractions that represent the same value",
+    ex:["Use fraction models (circles, bars, rectangles) to prove that two different fractions are equal","Represent pairs of equivalent fractions on number lines to confirm they land at the same point","Simplify a fraction to its simplest form by dividing numerator and denominator by the same number"],
+    fun:"1/2 = 2/4 = 4/8 — they look different but mean the same amount! 😄",
+    chips:[{e:"🗺️",t:"Equivalent fractions using models"},{e:"📏",t:"Equivalent fractions on number line"},{e:"✂️",t:"Simplest form"}]},
+   {name:"Comparing & Ordering Fractions",desc:"Comparing fractions using models and number lines",
+    ex:["Compare fractions with the same denominator by identifying which numerator is larger","Compare fractions with the same numerator by reasoning that a bigger denominator means smaller pieces","Use >, <, and = symbols accurately to compare any two given fractions","Arrange three or more fractions in correct order from the smallest to the largest value"],
+    fun:"Bigger denominator = smaller pieces! So 1/8 is actually smaller than 1/4! 🍕",
+    chips:[{e:"🔢",t:"Compare like denominators"},{e:"🔢",t:"Compare like numerators"},{e:"⚖️",t:"Compare fractions"},{e:"📊",t:"Order fractions"}]},
+   {name:"Fraction Word Problems",desc:"Real-life problems involving fractions",
+    ex:["Find a fraction of a whole number in a real-life context (e.g. 1/3 of 12 apples = 4 apples)","Solve problems involving equal sharing of objects using fractional reasoning","Apply unit fraction knowledge to solve simple real-world division and sharing problems"],
+    fun:"Sharing equally — that's exactly what fractions were invented to do! 🤝",
+    chips:[{e:"🍕",t:"Fractions of whole"},{e:"👥",t:"Fractions of group"},{e:"1️⃣",t:"Unit fraction problems"}]}
+  ]},
+  {title:"Measurement",emoji:"📏",pointers:[
+   {name:"Area",desc:"Measuring area using unit squares and formulas",
+    ex:["Count unit squares inside a shape carefully to find its area in square units","Apply the formula length × width to calculate the area of any rectangle quickly and accurately","Find a missing side length of a rectangle when only the area and one side length are given","Calculate the area of composite shapes by splitting them into two or more simple rectangles"],
+    fun:"Area tells you how much carpet you need for a room — very practical at home! 🏠",
+    chips:[{e:"⬛",t:"Area using unit squares"},{e:"▭",t:"Area of rectangle"},{e:"❓",t:"Missing side length"},{e:"📝",t:"Area word problems"},{e:"🔷",t:"Area of complex shapes"}]},
+   {name:"Perimeter",desc:"Calculating perimeter of rectangles and polygons",
+    ex:["Add all side lengths together to find the perimeter of any rectangle or irregular polygon","Apply the formula 2×(length + width) as a helpful shortcut for rectangles specifically","Find an unknown side length when only the total perimeter and other sides are provided","Apply perimeter skills to real-world design contexts such as fencing a garden or framing a photo"],
+    fun:"Perimeter is like a fence around a garden — it measures the entire outer boundary! 🌿",
+    chips:[{e:"▭",t:"Perimeter of rectangle"},{e:"🔷",t:"Perimeter of polygons"},{e:"❓",t:"Missing side perimeter"},{e:"📝",t:"Perimeter word problems"}]},
+   {name:"Time",desc:"Reading clocks and calculating elapsed time",
+    ex:["Read both analogue and digital clocks accurately to the nearest minute","Correctly distinguish between a.m. times (midnight to noon) and p.m. times (noon to midnight)","Calculate how much time has passed between two given times to find the elapsed time","Determine the start or end time of an event when only the elapsed duration is provided"],
+    fun:"Before clocks existed, people used sundials and shadows to tell the time! ☀️",
+    chips:[{e:"🕐",t:"Read clock"},{e:"🌅",t:"A.M. and P.M."},{e:"⏱️",t:"Elapsed time"},{e:"🏁",t:"Start and end time"},{e:"📝",t:"Time word problems"}]},
+   {name:"Units of Measurement",desc:"Metric and customary units for length, weight and volume",
+    ex:["Identify and correctly use customary units: inches, feet, yards, ounces, pounds, cups, pints, quarts","Identify and correctly use metric units: cm, m, km, g, kg, mL, L","Read and record temperatures accurately on a thermometer in both Fahrenheit and Celsius","Select the most appropriate measuring tool and unit for any specific measurement task given"],
+    fun:"A paperclip weighs about 1 gram. A litre of water weighs exactly 1 kilogram! 💧",
+    chips:[{e:"📐",t:"Customary units"},{e:"📏",t:"Metric units"},{e:"🌡️",t:"Temperature"},{e:"📦",t:"Length, weight, volume"},{e:"📝",t:"Measurement word problems"}]}
+  ]},
+  {title:"Geometry",emoji:"📐",pointers:[
+   {name:"Lines & Angles",desc:"Lines, segments, rays and types of angles",
+    ex:["Distinguish between a line (infinite), a line segment (two fixed endpoints), and a ray (one endpoint)","Identify a right angle (exactly 90°) and spot examples of right angles in everyday objects","Identify parallel lines (never meet) and perpendicular lines (meet at exactly 90°)","Recognise intersecting lines and describe the different angle types they create at their crossing"],
+    fun:"The corner of your phone screen is a perfect 90° right angle! 📱",
+    chips:[{e:"➡️",t:"Line, segment, ray"},{e:"📐",t:"Right angle"},{e:"⬌",t:"Parallel lines"},{e:"➕",t:"Perpendicular lines"},{e:"✖️",t:"Intersecting lines"}]},
+   {name:"Polygons",desc:"Identifying and classifying shapes by their sides and vertices",
+    ex:["Name polygons correctly based on their number of sides (triangle=3, quadrilateral=4, pentagon=5, etc.)","Count sides and vertices accurately to classify any presented shape by name","Sort a mixed group of shapes into categories based on their shared geometric properties"],
+    fun:"'Polygon' is Greek: 'poly' = many, 'gon' = angles! A hexagon has 6 of each! 🐝",
+    chips:[{e:"🔷",t:"Identify polygons"},{e:"🔢",t:"Sides and vertices"},{e:"📂",t:"Sort shapes"}]},
+   {name:"Quadrilaterals",desc:"Properties of special four-sided shapes",
+    ex:["Identify and draw rectangles, squares, rhombuses, parallelograms, and trapezoids accurately","Describe the unique properties of each quadrilateral type (equal sides, parallel sides, right angles)","Classify quadrilaterals using a properties-based hierarchy (e.g. a square is also a rectangle)","Understand that some quadrilaterals belong to multiple overlapping categories at the same time"],
+    fun:"A square is a special rectangle AND a special rhombus — the VIP of quadrilaterals! ⭐",
+    chips:[{e:"▭",t:"Rectangle"},{e:"⬛",t:"Square"},{e:"🔷",t:"Rhombus"},{e:"⬜",t:"Parallelogram"},{e:"🔺",t:"Trapezoid"},{e:"📂",t:"Classify quadrilaterals"}]}
+  ]},
+  {title:"Data, Graphs & Money",emoji:"📊",pointers:[
+   {name:"Data & Graphs",desc:"Reading and creating graphs; interpreting data sets",
+    ex:["Read and create bar graphs and picture graphs that include a scale greater than 1","Interpret line plots and answer data questions by reading the distribution of values shown","Organise raw data into tables and draw accurate, supported conclusions from the results","Read pie/circle graphs and explain what each section represents as a fraction of the whole"],
+    fun:"The first bar chart was invented in 1786 — graphs have helped us for 200+ years! 📊",
+    chips:[{e:"📊",t:"Bar graphs"},{e:"🖼️",t:"Picture graphs"},{e:"📈",t:"Line plots"},{e:"📋",t:"Tables"},{e:"🥧",t:"Circle graphs"}]},
+   {name:"Money",desc:"Counting money, making change and solving money problems",
+    ex:["Count mixed collections of coins and notes accurately to find the correct total amount","Calculate the correct change to give a customer when they pay with a larger denomination","Add and subtract money amounts correctly when they are written in decimal (dollars and cents) form","Solve multi-step word problems that involve buying, selling, and making change in real-life contexts"],
+    fun:"The word 'salary' comes from 'sal' (salt) — ancient Romans were actually paid in salt! 🧂",
+    chips:[{e:"💰",t:"Count money"},{e:"💱",t:"Make change"},{e:"➕",t:"Add and subtract money"},{e:"📝",t:"Money word problems"}]},
+   {name:"Financial Literacy",desc:"Income, spending, saving and basic financial decisions",
+    ex:["Understand that income is money earned in exchange for performing work or providing a service","Distinguish between needs (essential for daily life) and wants (nice to have but not essential)","Explain the importance of saving money regularly as a way to achieve specific future goals","Compare two spending choices side by side and decide which is the wiser financial decision"],
+    fun:"Save just $1 a day and you'll have $365 in one year — small savings add up fast! 🏦",
+    chips:[{e:"💼",t:"Income"},{e:"🛍️",t:"Spending"},{e:"🏦",t:"Saving"},{e:"💳",t:"Credit"},{e:"🤔",t:"Financial decisions"}]}
+  ]}
+ ]},
+
+ sci:{units:[
+  {title:"Matter & Materials",emoji:"⚗️",pointers:[
+   {name:"Materials & Properties",desc:"Identifying and comparing the properties of objects and materials",
+    ex:["Observe everyday objects and describe their properties: colour, texture, hardness, and flexibility","Compare two or more objects side by side and explain how their properties are alike or different","Identify the specific material (wood, metal, plastic, glass, fabric) each everyday object is made from","Explain why certain materials are chosen for specific objects based on their observable physical properties"],
+    fun:"Glass is actually made from sand! That's why beaches have tiny glass-like sparkles! 🏖️",
+    chips:[{e:"🔍",t:"Identify properties of an object"},{e:"⚖️",t:"Compare properties of objects"},{e:"🧱",t:"Compare properties of materials"},{e:"🔎",t:"Identify materials in objects"},{e:"🔬",t:"Identify multiple materials in objects"}]},
+   {name:"States of Matter",desc:"Solids, liquids and gases; classifying all matter",
+    ex:["Classify any substance correctly as a solid, liquid, or gas using observable properties","Describe how solids hold their shape, liquids take the shape of their container, and gases fill all space","Sort common everyday substances and materials confidently into the correct state of matter","Explain what makes gases different from both solids and liquids in terms of shape and volume"],
+    fun:"Air is real matter — it has mass! A room full of air weighs around 50 kilograms! 😲",
+    chips:[{e:"🧊",t:"Classify matter as solid, liquid, or gas"},{e:"👁️",t:"Identify solids, liquids, and gases"},{e:"📂",t:"Sort solids, liquids, and gases"}]},
+   {name:"Changes in Matter",desc:"How heating and cooling drive changes of state",
+    ex:["Identify the four main changes of state: melting, freezing, evaporation, and condensation","Explain that heating adds thermal energy to matter while cooling removes it, driving state changes","Read and correctly interpret change-of-state diagrams showing all transitions between states","Connect state changes to familiar everyday examples (ice melting, water boiling, morning dew forming)"],
+    fun:"Ice, water, and steam are the exact SAME substance — just at different temperatures! ❄️💧♨️",
+    chips:[{e:"📊",t:"Change-of-state diagrams"},{e:"🔥",t:"Heating and cooling"},{e:"🔄",t:"Changes of state"}]},
+   {name:"Heat & Thermal Energy",desc:"How heat moves between objects and how temperature changes",
+    ex:["Describe how heat energy naturally flows from a warmer object to a cooler nearby object","Predict what will happen to both objects' temperatures when a hot and cold object are placed together","Understand that temperature is a measure of the average thermal energy contained in a substance","Connect thermal energy concepts to familiar everyday heating and cooling experiences around the home"],
+    fun:"Heat always flows from hot to cold — just like a warm hug on a very cold day! 🤗",
+    chips:[{e:"🌡️",t:"Predict heat flow"},{e:"📈",t:"Predict temperature changes"},{e:"⚡",t:"Temperature and thermal energy"}]},
+   {name:"Physical & Chemical Changes",desc:"Identifying and distinguishing between the two types",
+    ex:["Identify physical changes (cutting, bending, melting) that alter form but create no new substance","Identify chemical changes (burning, rusting, cooking) that produce an entirely new substance","Explain the key difference: physical changes are usually reversible; chemical changes are usually not","Sort a list of everyday examples correctly into physical or chemical change categories with justification"],
+    fun:"Burning paper is a chemical change — you can never unburn it! Tearing is just physical! 🔥",
+    chips:[{e:"✂️",t:"Identify physical changes"},{e:"🧪",t:"Identify chemical changes"},{e:"⚖️",t:"Compare physical and chemical changes"}]},
+   {name:"Mixtures",desc:"How materials combine; identifying and describing mixtures",
+    ex:["Define a mixture as two or more substances combined together without chemically bonding","Explain that each substance in a mixture keeps all of its own original individual properties","Identify common everyday mixtures such as sand and water, trail mix, or saltwater with sugar","Describe simple separation methods that could be used to separate components of a given mixture"],
+    fun:"Salad is a perfect mixture — you can always pick out the tomatoes if you want! 🥗",
+    chips:[{e:"🥣",t:"Identify mixtures"}]}
+  ]},
+  {title:"Force, Energy & Motion",emoji:"⚡",pointers:[
+   {name:"Force & Motion",desc:"Pushes, pulls, balanced forces and how mass affects motion",
+    ex:["Identify forces as pushes or pulls and recognise clear examples of each in everyday life","Explain how balanced forces keep objects stationary and unbalanced forces cause movement or change","Predict how changing the amount of force applied or the mass of an object will affect resulting motion","Compare and rank the relative speeds of multiple moving objects using observation and measurements"],
+    fun:"The Moon stays in orbit because Earth's gravity is always pulling it toward us! 🌙",
+    chips:[{e:"👐",t:"Pushes and pulls"},{e:"⚖️",t:"Balanced and unbalanced forces"},{e:"⚖️",t:"Mass and force affect motion"},{e:"🏎️",t:"Compare speeds of moving objects"}]},
+   {name:"Light",desc:"How light travels, how we see, and light interacting with matter",
+    ex:["Explain that we see objects because light reflects off their surfaces and travels into our eyes","Describe how light travels in perfectly straight lines unless it hits a reflective or refractive surface","Classify materials as transparent (all light passes), translucent (some light passes), or opaque (no light passes)","Investigate and explain what happens when light strikes different types of surfaces and materials"],
+    fun:"Light travels at 300,000 km per second — it circles Earth 7.5 times in one second! ⚡",
+    chips:[{e:"👁️",t:"How we see objects"},{e:"🌈",t:"How light travels"},{e:"🪟",t:"Light and matter"}]},
+   {name:"Electricity",desc:"Static electricity and the behaviour of electrically charged objects",
+    ex:["Describe static electricity as a build-up of electric charge accumulating on an object's surface","Predict whether two charged objects will attract or repel based on the types of charges they carry","Give real-life examples of static electricity in action (hair standing up, lightning bolts, doorknob shocks)"],
+    fun:"Lightning is simply a giant spark of static electricity — nature's biggest, most dramatic spark! ⚡",
+    chips:[{e:"⚡",t:"Static electricity"},{e:"🔋",t:"Charged objects"}]},
+   {name:"Magnets",desc:"Magnetic attraction, repulsion and magnetic force strength",
+    ex:["Demonstrate through investigation that like magnetic poles repel and unlike poles attract","Correctly label the north and south poles on any bar or horseshoe magnet","Describe how the strength of magnetic force decreases as the distance between objects increases","Identify which common everyday materials are magnetic and which are not by testing and observing"],
+    fun:"Earth itself is one giant magnet — that's exactly why compasses work anywhere on Earth! 🧭",
+    chips:[{e:"🧲",t:"Magnets attract and repel"},{e:"🏷️",t:"Label magnets"},{e:"💪",t:"Magnetic force strength"}]}
+  ]},
+  {title:"Living Things",emoji:"🌿",pointers:[
+   {name:"Classification of Living Things",desc:"How scientists group organisms into categories",
+    ex:["Distinguish between living things (grow, reproduce, need energy) and non-living things clearly","Name and give real examples of the five vertebrate groups: mammals, birds, fish, reptiles, and amphibians","Classify animals as vertebrates (have a backbone) or invertebrates (no backbone)","Sort a variety of organisms into their correct classification groups using observable characteristics"],
+    fun:"There are over 8 million species on Earth — scientists have named only about 2 million so far! 🌍",
+    chips:[{e:"🌱",t:"Living and nonliving things"},{e:"🌿",t:"Plants and animals"},{e:"🦁",t:"Mammals, birds, fish, reptiles, amphibians"},{e:"🦴",t:"Vertebrates and invertebrates"}]},
+   {name:"Animals",desc:"Life cycles, group behaviour and human organs",
+    ex:["Trace the complete life cycle stages of different animals from birth all the way to reproduction","Compare the life cycles of insects, frogs, birds, and mammals, noting key similarities and differences","Describe types of group behaviour in animals (herds, flocks, packs, colonies) and explain the survival benefit","Identify all major human organs (heart, lungs, brain, stomach, kidneys) and describe their basic functions"],
+    fun:"A butterfly passes through 4 distinct stages — egg, caterpillar, pupa, then butterfly! 🦋",
+    chips:[{e:"🔄",t:"Animal life cycles"},{e:"⚖️",t:"Compare life cycles"},{e:"🐜",t:"Group behavior in animals"},{e:"❤️",t:"Human organs and functions"}]},
+   {name:"Plants",desc:"Plant parts, photosynthesis, life cycles and reproduction",
+    ex:["Identify roots, stems, leaves, flowers, fruits, and seeds, and explain exactly what each part does","Explain photosynthesis: plants use sunlight, water, and CO₂ to produce their own food and oxygen","Trace all the stages of a plant's life cycle from seed germination through to a mature, reproducing plant","Describe the different ways plants reproduce: through seeds, spores, and vegetative growth methods"],
+    fun:"A sunflower can grow a full 3 metres tall in just one single summer season! 🌻",
+    chips:[{e:"🥦",t:"Fruits and vegetables as plant parts"},{e:"🌿",t:"Plant parts and functions"},{e:"☀️",t:"How plants make food"},{e:"🔄",t:"Plant life cycle"},{e:"🌱",t:"How plants reproduce"}]},
+   {name:"Traits & Adaptations",desc:"Inherited traits and adaptations that support survival",
+    ex:["Define a trait as any observable physical or behavioural characteristic belonging to an organism","Explain that traits are shaped by both inherited genetic information and environmental conditions","Describe adaptations as special traits that improve an organism's ability to survive in its habitat","Give specific real examples of animal adaptations: camouflage, thick fur, sharp claws, webbed feet"],
+    fun:"A polar bear's fur is actually transparent, not white — it just looks white in sunlight! 🐻‍❄️",
+    chips:[{e:"🧬",t:"Traits"},{e:"🌍",t:"What affects traits"},{e:"🦁",t:"Adaptations"},{e:"🦎",t:"Animal adaptations"}]},
+   {name:"Heredity",desc:"Inherited vs acquired traits; reading pedigree charts",
+    ex:["Distinguish between inherited traits (passed through genes) and acquired traits (developed through experience)","Match offspring to their likely parents based on observed, shared inherited physical characteristics","Read and correctly interpret simple pedigree charts showing trait inheritance across multiple generations","Explain in simple terms how physical traits travel from parents to their offspring through reproduction"],
+    fun:"You inherited your eye colour from your parents, who got it from their parents! 👁️",
+    chips:[{e:"🧬",t:"Inherited traits"},{e:"🏋️",t:"Acquired traits"},{e:"🔗",t:"Match offspring to parents"},{e:"🌱",t:"Plant pedigree charts"},{e:"🐕",t:"Animal pedigree charts"}]},
+   {name:"Ecosystems",desc:"Food chains, food webs and ecological interdependence",
+    ex:["Define an ecosystem as a community of living organisms interacting with each other and their environment","Identify the roles of producers (plants), consumers (animals), and decomposers in a food chain","Trace how energy and matter flow step by step through a food chain from the sun to producers to consumers","Describe food webs as interconnected food chains and explain how removing one species impacts others"],
+    fun:"If all bees disappeared from Earth, most of our food crops would stop producing! 🐝",
+    chips:[{e:"🌍",t:"Ecosystems"},{e:"🔗",t:"Roles in food chains"},{e:"♻️",t:"Matter in food chains"},{e:"🕸️",t:"Food webs"}]}
+  ]},
+  {title:"Earth & Space",emoji:"🌍",pointers:[
+   {name:"Rocks & Minerals",desc:"Classifying igneous, sedimentary and metamorphic rocks",
+    ex:["Identify minerals by their observable properties: colour, lustre, hardness, streak, and crystal structure","Describe how igneous rocks form from magma or lava that cools and solidifies over time","Explain how sedimentary rocks form when layers of sediment are compressed and cemented over long periods","Describe how metamorphic rocks form when any existing rock is changed by intense heat and pressure"],
+    fun:"Diamonds are a mineral — and they're the single hardest natural substance on Earth! 💎",
+    chips:[{e:"📂",t:"Classify rocks and minerals"},{e:"🔍",t:"Identify minerals"},{e:"🪨",t:"Identify rocks"},{e:"🌋",t:"Igneous rocks"},{e:"📚",t:"Sedimentary rocks"},{e:"♻️",t:"Metamorphic rocks"}]},
+   {name:"Fossils",desc:"How fossils form and what they reveal about Earth's past",
+    ex:["Describe step by step how an organism becomes preserved as a fossil in sedimentary rock over time","Compare specific fossil specimens with their closest living modern relatives and describe key similarities","Use fossil evidence to make scientific inferences about ancient environments, climates, and food sources"],
+    fun:"Some fossils are over 500 million years old — that's much older than the dinosaurs! 🦕",
+    chips:[{e:"🦴",t:"Fossils"},{e:"🔗",t:"Fossils and modern organisms"},{e:"⏳",t:"Ancient and modern organisms"}]},
+   {name:"Weather & Climate",desc:"Weather vs climate; reading data; world climates",
+    ex:["Read a thermometer accurately and compare temperature readings across different places and times","Explain the key difference between weather (short-term daily conditions) and climate (long-term patterns)","Compare the climates of multiple different world regions and describe how and why they differ","Interpret weather charts, temperature graphs, and climate data tables to answer scientific questions"],
+    fun:"The Sahara Desert gets less rain in a full year than some cities receive in one week! ☀️",
+    chips:[{e:"🌡️",t:"Thermometer reading"},{e:"⚖️",t:"Compare temperatures"},{e:"🌦️",t:"Weather and climate"},{e:"🌍",t:"Climate around the world"},{e:"📊",t:"Climate data"}]},
+   {name:"Earth's Features",desc:"Landforms, bodies of water and natural resources",
+    ex:["Identify and describe all major bodies of water: oceans, seas, rivers, lakes, ponds, and streams","Explain how water is distributed across Earth's surface (saltwater vs freshwater; surface vs underground)","Identify key natural resources (water, soil, minerals, timber) and describe how humans depend on them","Name and describe major land features: mountains, valleys, plains, plateaus, canyons, and river deltas"],
+    fun:"71% of Earth is covered in water — but only 3% of it is fresh water we can actually drink! 💧",
+    chips:[{e:"🌊",t:"Bodies of water"},{e:"💧",t:"Water on Earth"},{e:"🌿",t:"Natural resources"},{e:"⛰️",t:"Land features"}]},
+   {name:"Earth Events",desc:"Earthquakes, volcanoes, erosion and surface changes",
+    ex:["Explain how both slow processes (erosion, deposition) and sudden events (earthquakes, volcanoes) shape Earth's surface","Describe what causes earthquakes: the movement and collision of massive tectonic plates beneath Earth's crust","Explain how volcanoes form at weak points in Earth's crust and what physically happens during an eruption","Describe erosion as the gradual wearing away and transport of land materials by water, wind, ice, and gravity"],
+    fun:"Mt. Everest grows about 4mm taller every single year because of tectonic plate movement! 🏔️",
+    chips:[{e:"🏔️",t:"Changes to Earth's surface"},{e:"📳",t:"Earthquakes"},{e:"🌋",t:"Volcanoes"},{e:"💨",t:"Erosion"}]},
+   {name:"Astronomy",desc:"The solar system and identifying all its planets",
+    ex:["Name all eight planets of our solar system in their correct order outward from the Sun","Describe key distinguishing characteristics of each planet (size, rings, number of moons, surface features)","Distinguish between a planet (orbits the sun), a star (produces its own light), and a moon (orbits a planet)"],
+    fun:"One day on Venus is actually longer than one full year on Venus — it rotates incredibly slowly! 🪐",
+    chips:[{e:"🪐",t:"Planets in the solar system"}]}
+  ]},
+  {title:"Engineering & Measurement",emoji:"🔧",pointers:[
+   {name:"Engineering & Design",desc:"Design thinking and solving real-world problems systematically",
+    ex:["Apply the full engineering design process: identify the problem, brainstorm, build, test, and improve","Design and evaluate a magnet-based solution to address a specific real-world challenge presented","Plan and test designs specifically intended to prevent or minimise damage from erosion, flooding, or storms","Analyse test results objectively and use the findings to meaningfully refine and improve the design"],
+    fun:"Engineers designed the Eiffel Tower to sway in strong winds — completely on purpose! 🗼",
+    chips:[{e:"🧲",t:"Solve problems using magnets"},{e:"🌿",t:"Prevent erosion design"},{e:"🌊",t:"Prevent flooding design"},{e:"🌀",t:"Prevent hurricane damage design"}]},
+   {name:"Units & Measurement",desc:"Choosing the right tools and units for measurement tasks",
+    ex:["Identify and correctly use both standard customary and metric units for time, length, mass, and volume","Select the most appropriate measuring tool for each specific task (ruler, balance scale, cylinder, thermometer)","Read and record measurements accurately from a variety of different scientific measuring instruments","Apply precise measurement skills consistently when conducting science experiments and recording data in tables"],
+    fun:"The metric system is used in almost every country — except the USA, Liberia, and Myanmar! 📏",
+    chips:[{e:"⏰",t:"Units of time"},{e:"📐",t:"Customary units"},{e:"📏",t:"Metric units"},{e:"🔤",t:"Abbreviations of units"},{e:"🔬",t:"Measuring tools"}]}
+  ]}
+ ]}
+};
+
+function renderSubject(subj){
+  const data=C[subj];
+  const container=document.getElementById(`${subj}-units`);
+  container.innerHTML='';
+  data.units.forEach((unit,ui)=>{
+    const card=document.createElement('div');
+    card.className=`unit-card ${subj}`;
+    card.id=`unit-${subj}-${ui}`;
+    const sc=unit.pointers.reduce((a,p)=>a+p.chips.length,0);
+    const pp=Math.min(100,Math.floor((sc/15)*100));
+    card.innerHTML=`
+      <div class="unit-header" onclick="toggleUnit('unit-${subj}-${ui}')">
+        <div class="unit-left">
+          <div class="unit-num">${ui+1}</div>
+          <div class="unit-text">
+            <div class="unit-title">${unit.emoji} ${unit.title}</div>
+            <div class="unit-meta">${unit.pointers.length} Pointers · ${sc} Subtopics</div>
+            <div class="progress-bar-wrap"><div class="progress-track"><div class="progress-fill" style="width:${pp}%"></div></div></div>
+          </div>
+        </div>
+        <div class="unit-chevron">▼</div>
+      </div>
+      <div class="unit-body">
+        ${unit.pointers.map((p,pi)=>`
+          <div class="pointer-block ${subj}" id="ptr-${subj}-${ui}-${pi}">
+            <div class="pointer-header" onclick="togglePointer('ptr-${subj}-${ui}-${pi}')">
+              <div class="pointer-left">
+                <div class="pointer-dot"></div>
+                <div class="pointer-text">
+                  <div class="pointer-name">${p.name}</div>
+                  <div class="pointer-desc">${p.desc}</div>
+                </div>
+              </div>
+              <div class="pointer-chevron">▼</div>
+            </div>
+            <div class="pointer-body">
+              <div class="section-label">What Students Learn</div>
+              <div class="explain-list">
+                ${p.ex.map((e,i)=>`<div class="explain-item"><div class="explain-num">${i+1}</div><span>${e}</span></div>`).join('')}
+              </div>
+              <div class="section-divider"></div>
+              <div class="section-label">Subtopics</div>
+              <div class="subtopic-grid">
+                ${p.chips.map(c=>`<div class="subtopic-chip">${c.e} ${c.t}</div>`).join('')}
+              </div>
+              <div class="fun-fact"><span class="ff-icon">💡</span><span>${p.fun}</span></div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function toggleUnit(id){document.getElementById(id).classList.toggle('open');}
+function togglePointer(id){document.getElementById(id).classList.toggle('open');}
+function showSubject(subj,btn){
+  document.querySelectorAll('.subject-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('panel-'+subj).classList.add('active');
+  btn.classList.add('active-'+subj);
+}
+['eng','math','sci'].forEach(s=>renderSubject(s));
+
+</script>
+</body>
+</html>
